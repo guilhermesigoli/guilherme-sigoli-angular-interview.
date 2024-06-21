@@ -22,6 +22,9 @@ export class PlayComponent implements OnInit {
       })
     )).subscribe();
 
+    public rightAnswers = 0;
+    public wrongAnswers = 0;
+
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -33,6 +36,19 @@ export class PlayComponent implements OnInit {
 
   onAnswerClicked(questionId: QuestionModel['_id'], answerSelected: string): void {
     this.questionsService.selectAnswer(questionId, answerSelected);
+  }
+
+  public submit() {
+      const entities = this.questions$.subscribe(res => {
+        res.forEach(entity => {
+          const control = entity.answers.find(answer => answer._id === entity.selectedId);
+          if(control?.isCorrect) {
+            this.rightAnswers += 1;
+          } else {
+            this.wrongAnswers += 1;
+          }
+        })
+      })
   }
 
 }

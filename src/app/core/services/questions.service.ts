@@ -12,6 +12,8 @@ export class QuestionsService {
   gettingQuestions$ = this.store.select('gettingQuestions');
   questions$ = this.store.find();
 
+  
+
   constructor(
     private readonly http: HttpClient,
     private readonly store: QuestionsStore,
@@ -32,7 +34,7 @@ export class QuestionsService {
           category: result.category,
           type: result.type,
           difficulty: result.difficulty,
-          question: result.question,
+          question: this.fixQuestionCharacters(result.question),
           answers: [{
             _id: new Date().getTime().toString() + Math.random(),
             text: result.correct_answer,
@@ -60,5 +62,10 @@ export class QuestionsService {
       ...entity,
       selectedId: answerId,
     }))
+  }
+
+
+  private fixQuestionCharacters(question: string): string{
+    return question.replace(/&quot;/g,'"').replace(/&#039;/g, "'").replace(/&rsquo;/g, "'");
   }
 }

@@ -28,5 +28,8 @@
         </div>
       </div>
     </div>
+    <button (click)="submit()" [disabled]="allQuestionsAnswered()">Submit</button>
+    {{rightAnswers}}
+    {{wrongAnswers}}
   </ng-template>
 </section>
